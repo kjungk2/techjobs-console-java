@@ -70,19 +70,53 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
+
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
 
         return jobs;
     }
+
+    /*
+    * my method for searching across all columns
+    * value parameter is the search term given by user
+    * returns List of all jobs matching the criteria
+    */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        // initialize the collection that will be populated and returned
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        // iterate over each row in allJobs
+        for (HashMap<String, String> row : allJobs) {
+
+            // for each cell in the row
+            for (String cell : row.values()) {
+
+                // if the cell contains the value (searchTerm), add it to jobs if it's not in there
+                if (cell.toLowerCase().contains(value.toLowerCase())) {
+
+                    if (!jobs.contains(row)) {
+                        jobs.add(row);
+                    }
+                }
+            }
+        }
+
+        return jobs;
+    }
+
 
     /**
      * Read in data from a CSV file and store it in a list
